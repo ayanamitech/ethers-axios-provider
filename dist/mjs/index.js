@@ -25,7 +25,7 @@
 import { post } from 'axios-auto';
 import { utils, providers } from 'ethers';
 
-const version = "ethers-axios-provider@5.6.9";
+const version = "ethers-axios-provider@5.6.10";
 
 const logger = new utils.Logger(version);
 class AxiosProvider extends providers.JsonRpcProvider {

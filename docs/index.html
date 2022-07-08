@@ -29,6 +29,7 @@
 <p><strong>AxiosProvider</strong> is an easy to use <a href="https://docs.ethers.io/v5/">ethers.js v5</a> compatible Ethereum Javascript (Typescript) JSONRPC API Provider powered by a powerful <a href="https://axios-http.com/">Axios</a> HTTP client wrapped by <a href="https://ayanamitech.github.io/axios-auto">axios-auto</a> library to help your automated error handling &amp; <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any">Promise.any</a> powered client-side load balancing feature.</p>
 <p><strong>Features:</strong></p>
 <ul>
+<li>Provides much better error handling &amp; timeouts for public RPC nodes the most widely used HTTP client Axios.</li>
 <li>Supports custom http.agent / https.Agent via Axios (Node.js feature to support Tor, Socks5, Https proxy connection)</li>
 <li>Client side load-balancer using <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any">Promise.any()</a> to resolve fastest query result from the fastest node connection.</li>
 <li>Sends a query to multiple nodes (like Promise.all but without waiting for every promise to resolve)</li>

@@ -23,6 +23,7 @@
 
 **Features:**
 
+- Provides much better error handling & timeouts for public RPC nodes the most widely used HTTP client Axios.
 - Supports custom http.agent / https.Agent via Axios (Node.js feature to support Tor, Socks5, Https proxy connection)
 - Client side load-balancer using [Promise.any()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any) to resolve fastest query result from the fastest node connection.
 - Sends a query to multiple nodes (like Promise.all but without waiting for every promise to resolve)

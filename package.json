@@ -1,6 +1,6 @@
 {
   "name": "ethers-axios-provider",
-  "version": "5.6.9",
+  "version": "5.6.10",
   "description": "An ethers-compatible JSONRPC provider powered by Axios",
   "main": "./dist/cjs/index.js",
   "module": "./dist/mjs/index.js",
@@ -39,7 +39,7 @@
     "types"
   ],
   "author": "AyanamiTech <ayanami0330@protonmail.com>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/ayanamitech/ethers-axios-provider/issues"
   },
