@@ -11,7 +11,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var MockAdapter__default = /*#__PURE__*/_interopDefaultLegacy(MockAdapter);
 
-const version = "ethers-axios-provider@5.6.11";
+const version = "ethers-axios-provider@5.6.12";
 
 const logger = new ethers.utils.Logger(version);
 class AxiosProvider extends ethers.providers.JsonRpcProvider {
@@ -50,25 +50,17 @@ class AxiosProvider extends ethers.providers.JsonRpcProvider {
     const options = Object.assign({}, this.axiosConfig);
     delete options.url;
     if (options.filter === void 0) {
-      const filter = (data) => {
-        if (data.error) {
+      const filter = (data, count, retryMax) => {
+        if (typeof count === "number" && typeof retryMax === "number" && data.error) {
           const message = typeof data.error.message === "string" ? data.error.message : typeof data.error === "string" ? data.error : typeof data.error === "object" ? JSON.stringify(data.error) : "";
-          throw new Error(message);
-        } else if (Array.isArray(data)) {
-          const errorArray = data.map((d) => {
-            if (d.error) {
-              const message = typeof d.error.message === "string" ? d.error.message : typeof d.error === "string" ? d.error : typeof d.error === "object" ? JSON.stringify(d.error) : "";
-              return new Error(message);
-            }
-          }).filter((d) => d);
-          if (errorArray.length > 0) {
-            throw errorArray;
+          if (count < retryMax + 1) {
+            throw new Error(message);
           }
         }
       };
       options.filter = filter;
     }
-    const sendTxMethods = ["eth_sendRawTransaction", "eth_sendTransaction", "klay_sendRawTransaction", "klay_sendTransaction"];
+    const sendTxMethods = ["eth_sendRawTransaction", "eth_sendTransaction"];
     const sendTransaction = sendTxMethods.includes(method) ? true : false;
     if (sendTransaction) {
       return axiosAuto.post(url.replace(/\s+/g, "").split(",")[0], payload, options).then((postResult) => postResult.result);

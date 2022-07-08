@@ -55,25 +55,15 @@ export default class AxiosProvider extends providers.JsonRpcProvider {
       /**
        * Filter rpc node generated error
        */
-      const filter: filter = (data: any) => {
-        if (data.error) {
+      const filter: filter = (data: any, count?: number, retryMax?: number) => {
+        if (typeof count === 'number' && typeof retryMax === 'number' && data.error) {
           const message: string = (typeof data.error.message === 'string')
             ? data.error.message : (typeof data.error === 'string')
               ? data.error : (typeof data.error === 'object')
                 ? JSON.stringify(data.error) : '';
-          throw new Error(message);
-        } else if (Array.isArray(data)) {
-          const errorArray = data.map((d: any) => {
-            if (d.error) {
-              const message: string = (typeof d.error.message === 'string')
-                ? d.error.message : (typeof d.error === 'string')
-                  ? d.error : (typeof d.error === 'object')
-                    ? JSON.stringify(d.error) : '';
-              return new Error(message);
-            }
-          }).filter(d => d);
-          if (errorArray.length > 0) {
-            throw errorArray;
+          // Throw error to retry inside axios-auto function
+          if (count < retryMax + 1) {
+            throw new Error(message);
           }
         }
       };
@@ -81,7 +71,7 @@ export default class AxiosProvider extends providers.JsonRpcProvider {
       options.filter = filter;
     }
 
-    const sendTxMethods = ['eth_sendRawTransaction', 'eth_sendTransaction', 'klay_sendRawTransaction', 'klay_sendTransaction'];
+    const sendTxMethods = ['eth_sendRawTransaction', 'eth_sendTransaction'];
     const sendTransaction = sendTxMethods.includes(method) ? true : false;
 
     if (sendTransaction) {

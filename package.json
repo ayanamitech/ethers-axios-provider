@@ -1,6 +1,6 @@
 {
   "name": "ethers-axios-provider",
-  "version": "5.6.11",
+  "version": "5.6.12",
   "description": "An ethers-compatible JSONRPC provider powered by Axios",
   "main": "./dist/cjs/index.js",
   "module": "./dist/mjs/index.js",
@@ -51,11 +51,12 @@
     "@typescript-eslint/eslint-plugin": "^5.27.0",
     "assert": "^2.0.0",
     "axios": "0.27.2",
-    "axios-auto": "0.28.11",
+    "axios-auto": "0.28.12",
     "axios-mock-adapter": "^1.21.1",
     "esbuild": "^0.14.42",
     "esbuild-loader": "^2.19.0",
     "eslint": "^8.17.0",
+    "ethers": "5.6.9",
     "karma": "^6.3.20",
     "karma-chrome-launcher": "^3.1.1",
     "karma-firefox-launcher": "^2.1.2",
@@ -76,7 +77,7 @@
   },
   "peerDependencies": {
     "axios": "^0.27.2",
-    "axios-auto": "^0.28.11",
+    "axios-auto": "^0.28.12",
     "ethers": "^5.6.9"
   }
 }
