@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="AxiosProvider.js"></script>
+  </head>
+  <body>
+    <h2>Query</h2><pre id="result-query">Waiting for data</pre><br>
+    <script>
+      const init = async () => {
+        const provider = new AxiosProvider('https://bsc-dataseed.binance.org, https://binance.nodereal.io, https://bscrpc.com', { debug: true, retryMax: 0, timeout: 1000 });
+        const data = await provider.getBlock('latest');
+        document.getElementById("result-query").textContent = JSON.stringify(data, undefined, 2);
+      };
+      init();
+    </script>
+  </body>
+</html>
