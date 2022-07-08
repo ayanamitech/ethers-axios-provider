@@ -25,7 +25,7 @@
 import { post } from 'axios-auto';
 import { utils, providers } from 'ethers';
 
-const version = "ethers-axios-provider@5.6.10";
+const version = "ethers-axios-provider@5.6.11";
 
 const logger = new utils.Logger(version);
 class AxiosProvider extends providers.JsonRpcProvider {
@@ -47,6 +47,13 @@ class AxiosProvider extends providers.JsonRpcProvider {
     this.axiosConfig = axiosConfig;
   }
   send(method, params) {
+    var _a;
+    if (method === "eth_chainId" && ((_a = this._network) == null ? void 0 : _a.chainId)) {
+      return new Promise((resolve) => {
+        var _a2;
+        return resolve((_a2 = this._network) == null ? void 0 : _a2.chainId);
+      });
+    }
     const url = Object.assign({}, this.axiosConfig).url;
     const payload = {
       method,

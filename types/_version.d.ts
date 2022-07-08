@@ -1,1 +1,1 @@
-export declare const version = "ethers-axios-provider@5.6.10";
+export declare const version = "ethers-axios-provider@5.6.11";

@@ -27,7 +27,7 @@
 var axiosAuto = require('axios-auto');
 var ethers = require('ethers');
 
-const version = "ethers-axios-provider@5.6.10";
+const version = "ethers-axios-provider@5.6.11";
 
 const logger = new ethers.utils.Logger(version);
 class AxiosProvider extends ethers.providers.JsonRpcProvider {
@@ -49,6 +49,13 @@ class AxiosProvider extends ethers.providers.JsonRpcProvider {
     this.axiosConfig = axiosConfig;
   }
   send(method, params) {
+    var _a;
+    if (method === "eth_chainId" && ((_a = this._network) == null ? void 0 : _a.chainId)) {
+      return new Promise((resolve) => {
+        var _a2;
+        return resolve((_a2 = this._network) == null ? void 0 : _a2.chainId);
+      });
+    }
     const url = Object.assign({}, this.axiosConfig).url;
     const payload = {
       method,

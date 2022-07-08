@@ -28,6 +28,7 @@
 - Client side load-balancer using [Promise.any()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/any) to resolve fastest query result from the fastest node connection.
 - Sends a query to multiple nodes (like Promise.all but without waiting for every promise to resolve)
 - Advanced retries for server-side error using [axios-auto](https://ayanamitech.github.io/axios-auto)
+- Return cached eth_chainId value since network doesn't change for RPC nodes for most cases.
 
 ## Installation
 

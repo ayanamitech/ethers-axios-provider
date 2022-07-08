@@ -11,7 +11,7 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var MockAdapter__default = /*#__PURE__*/_interopDefaultLegacy(MockAdapter);
 
-const version = "ethers-axios-provider@5.6.10";
+const version = "ethers-axios-provider@5.6.11";
 
 const logger = new ethers.utils.Logger(version);
 class AxiosProvider extends ethers.providers.JsonRpcProvider {
@@ -33,6 +33,13 @@ class AxiosProvider extends ethers.providers.JsonRpcProvider {
     this.axiosConfig = axiosConfig;
   }
   send(method, params) {
+    var _a;
+    if (method === "eth_chainId" && ((_a = this._network) == null ? void 0 : _a.chainId)) {
+      return new Promise((resolve) => {
+        var _a2;
+        return resolve((_a2 = this._network) == null ? void 0 : _a2.chainId);
+      });
+    }
     const url = Object.assign({}, this.axiosConfig).url;
     const payload = {
       method,

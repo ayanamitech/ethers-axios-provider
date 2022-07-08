@@ -33,6 +33,11 @@ export default class AxiosProvider extends providers.JsonRpcProvider {
   }
 
   send(method: string, params: Array<any>): Promise<any> {
+    // Return cached eth_chainId if available
+    if (method === 'eth_chainId' && this._network?.chainId) {
+      return new Promise(resolve => resolve(this._network?.chainId));
+    }
+
     const url = Object.assign({}, this.axiosConfig).url;
 
     const payload = {
