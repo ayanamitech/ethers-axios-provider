@@ -6,7 +6,7 @@ const license = fs.readFileSync("LICENSE", {encoding: "utf-8"});
 import pkg from './package.json';
 const deps = pkg.dependencies || {};
 const peerDeps = pkg.peerDependencies || {};
-const testDeps = [ 'assert', 'axios-mock-adapter', 'es-aggregate-error' ];
+const testDeps = [ 'assert', 'axios-mock-adapter' ];
 
 const banner = [
   "/*!",
