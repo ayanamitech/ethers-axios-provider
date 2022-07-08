@@ -59,6 +59,10 @@ Every release of `ethers-axios-provider` will have new build of `./dist/browser/
 <script src="https://unpkg.com/ethers-axios-provider@latest"></script>
 ```
 
+Note that it would be helpful to setup the Subresource Integrity hash to ensure that the imported library has the desired codes.
+
+For more info, see https://www.srihash.org/.
+
 ### Node.js
 
 ```js
