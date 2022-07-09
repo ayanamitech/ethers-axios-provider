@@ -35,8 +35,8 @@
 **Node.js**
 
 ```bash
-# Wouldn't work without axios or axios-auto installed
-npm i --save axios axios-auto ethers ethers-axios-provider
+# Wouldn't work without axios or ethers installed
+npm i --save axios ethers ethers-axios-provider
 ```
 
 ## Documentation
