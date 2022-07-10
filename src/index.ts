@@ -27,6 +27,9 @@ export default class AxiosProvider extends providers.JsonRpcProvider {
       Object.assign(axiosConfig, extraConfig);
     }
 
+    axiosConfig.headers ||= {};
+    axiosConfig.headers['Content-Type'] ||= 'application/json;charset=utf-8';
+
     // Tell JsonRpcProvider only one node (While send queries to multiple nodes at once)
     super(axiosConfig.url.replace(/\s+/g, '').split(',')[0], network);
     this.axiosConfig = axiosConfig;
@@ -51,25 +54,23 @@ export default class AxiosProvider extends providers.JsonRpcProvider {
     const options: options = Object.assign({}, this.axiosConfig);
     delete options.url;
 
-    if (options.filter === undefined) {
-      /**
-       * Filter rpc node generated error
-       */
-      const filter: filter = (data: any, count?: number, retryMax?: number) => {
-        if (typeof count === 'number' && typeof retryMax === 'number' && data.error) {
-          const message: string = (typeof data.error.message === 'string')
-            ? data.error.message : (typeof data.error === 'string')
-              ? data.error : (typeof data.error === 'object')
-                ? JSON.stringify(data.error) : '';
-          // Throw error to retry inside axios-auto function
-          if (count < retryMax + 1) {
-            throw new Error(message);
-          }
+    /**
+     * Filter rpc node generated error
+     */
+    const filter: filter = (data: any, count?: number, retryMax?: number) => {
+      if (typeof count === 'number' && typeof retryMax === 'number' && data.error) {
+        const message: string = (typeof data.error.message === 'string')
+          ? data.error.message : (typeof data.error === 'string')
+            ? data.error : (typeof data.error === 'object')
+              ? JSON.stringify(data.error) : '';
+        // Throw error to retry inside axios-auto function
+        if (count < retryMax + 1) {
+          throw new Error(message);
         }
-      };
+      }
+    };
 
-      options.filter = filter;
-    }
+    options.filter ||= filter;
 
     const sendTxMethods = ['eth_sendRawTransaction', 'eth_sendTransaction'];
     const sendTransaction = sendTxMethods.includes(method) ? true : false;

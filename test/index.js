@@ -11,11 +11,12 @@ function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'defau
 var axios__default = /*#__PURE__*/_interopDefaultLegacy(axios);
 var MockAdapter__default = /*#__PURE__*/_interopDefaultLegacy(MockAdapter);
 
-const version = "ethers-axios-provider@5.6.13";
+const version = "ethers-axios-provider@5.6.14";
 
 const logger = new ethers.utils.Logger(version);
 class AxiosProvider extends ethers.providers.JsonRpcProvider {
   constructor(urlOrConfig, extraConfig, network) {
+    var _a;
     if (typeof urlOrConfig === "object" && !urlOrConfig.url) {
       logger.throwArgumentError("missing node url", "urlOrConfig", urlOrConfig);
     }
@@ -28,6 +29,8 @@ class AxiosProvider extends ethers.providers.JsonRpcProvider {
     if (extraConfig) {
       Object.assign(axiosConfig, extraConfig);
     }
+    axiosConfig.headers || (axiosConfig.headers = {});
+    (_a = axiosConfig.headers)["Content-Type"] || (_a["Content-Type"] = "application/json;charset=utf-8");
     super(axiosConfig.url.replace(/\s+/g, "").split(",")[0], network);
     this.requestId = 1;
     this.axiosConfig = axiosConfig;
@@ -49,17 +52,15 @@ class AxiosProvider extends ethers.providers.JsonRpcProvider {
     };
     const options = Object.assign({}, this.axiosConfig);
     delete options.url;
-    if (options.filter === void 0) {
-      const filter = (data, count, retryMax) => {
-        if (typeof count === "number" && typeof retryMax === "number" && data.error) {
-          const message = typeof data.error.message === "string" ? data.error.message : typeof data.error === "string" ? data.error : typeof data.error === "object" ? JSON.stringify(data.error) : "";
-          if (count < retryMax + 1) {
-            throw new Error(message);
-          }
+    const filter = (data, count, retryMax) => {
+      if (typeof count === "number" && typeof retryMax === "number" && data.error) {
+        const message = typeof data.error.message === "string" ? data.error.message : typeof data.error === "string" ? data.error : typeof data.error === "object" ? JSON.stringify(data.error) : "";
+        if (count < retryMax + 1) {
+          throw new Error(message);
         }
-      };
-      options.filter = filter;
-    }
+      }
+    };
+    options.filter || (options.filter = filter);
     const sendTxMethods = ["eth_sendRawTransaction", "eth_sendTransaction"];
     const sendTransaction = sendTxMethods.includes(method) ? true : false;
     if (sendTransaction) {
