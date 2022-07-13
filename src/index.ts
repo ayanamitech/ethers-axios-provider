@@ -58,13 +58,22 @@ export default class AxiosProvider extends providers.JsonRpcProvider {
      * Filter rpc node generated error
      */
     const filter: filter = (data: any, count?: number, retryMax?: number) => {
-      if (typeof count === 'number' && typeof retryMax === 'number' && data.error) {
-        const message: string = (typeof data.error.message === 'string')
-          ? data.error.message : (typeof data.error === 'string')
-            ? data.error : (typeof data.error === 'object')
-              ? JSON.stringify(data.error) : '';
+      if (typeof count === 'number' && typeof retryMax === 'number') {
+        let message: string | undefined;
+        // Handle usual error object from remote node
+        if (data.error) {
+          message = (typeof data.error.message === 'string')
+            ? data.error.message : (typeof data.error === 'string')
+              ? data.error : (typeof data.error === 'object')
+                ? JSON.stringify(data.error) : '';
+        // Handle custom error from remote node
+        } else if (typeof data.result === 'undefined') {
+          message = (typeof data === 'string') ? data :
+            (typeof data === 'object') ? JSON.stringify(data) :
+              'Result not available from remote node';
+        }
         // Throw error to retry inside axios-auto function
-        if (count < retryMax + 1) {
+        if (typeof message !== 'undefined' && count < retryMax + 1) {
           throw new Error(message);
         }
       }

@@ -25,7 +25,7 @@
 import { post } from 'axios-auto';
 import { utils, providers } from 'ethers';
 
-const version = "ethers-axios-provider@5.6.14";
+const version = "ethers-axios-provider@5.6.15";
 
 const logger = new utils.Logger(version);
 class AxiosProvider extends providers.JsonRpcProvider {
@@ -67,9 +67,14 @@ class AxiosProvider extends providers.JsonRpcProvider {
     const options = Object.assign({}, this.axiosConfig);
     delete options.url;
     const filter = (data, count, retryMax) => {
-      if (typeof count === "number" && typeof retryMax === "number" && data.error) {
-        const message = typeof data.error.message === "string" ? data.error.message : typeof data.error === "string" ? data.error : typeof data.error === "object" ? JSON.stringify(data.error) : "";
-        if (count < retryMax + 1) {
+      if (typeof count === "number" && typeof retryMax === "number") {
+        let message;
+        if (data.error) {
+          message = typeof data.error.message === "string" ? data.error.message : typeof data.error === "string" ? data.error : typeof data.error === "object" ? JSON.stringify(data.error) : "";
+        } else if (typeof data.result === "undefined") {
+          message = typeof data === "string" ? data : typeof data === "object" ? JSON.stringify(data) : "Result not available from remote node";
+        }
+        if (typeof message !== "undefined" && count < retryMax + 1) {
           throw new Error(message);
         }
       }
